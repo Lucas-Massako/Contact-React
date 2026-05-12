@@ -1,9 +1,15 @@
-import { useState } from 'react'
-import './App.css'
 
 
+import { useEffect, useState } from 'react'
 import ContactForm from './components/ContactForm'
 import ContactList from './components/ContactList'
+
+import './App.css'
+import { api } from './lib/api';
+import { Routes, Route } from 'react-router-dom';
+
+
+
 
 function App() {
   
@@ -48,6 +54,30 @@ function App() {
       </main>
     </div>
   )
+  return (
+  <div className="App">
+    <nav>
+      <link to="/">Accueil</link>
+      <link to="/addContact">Ajouter Contact</link>
+    <link to="/login">Login</link>
+    </nav>
+    </div>
+  );
+    
 }
+<Routes>
+  <Route path="/" element={
+    <ProtectedRoute><contactList contacts={contacts} deleteContact={deleteContact} updatedContacts={updatedContacts}></ProtectedRoute>
+    <Route path="/login" element={<Login />} />
+    <Route path="/add" element={
+      <ProtectedRoute>
+        <ContactForm addContact={addContact} />
+      </ProtectedRoute>
+    } />
+  
+}
+</Routes>
+  
+
 
 export default App

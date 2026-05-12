@@ -3,10 +3,10 @@ import { useState } from 'react';
 const ContactForm = ({ addContact }) => {
 
   const [formData, setFormData] = useState({
-    Prénom: '',
-    Nom: '',
+    prenom: '',
+    nom: '',
     email: '',
-    Num: ''
+    tel: ''
   });
 
   // Fonction pour mettre à jour le state à chaque changement dans un input
@@ -23,7 +23,7 @@ const ContactForm = ({ addContact }) => {
     e.preventDefault();
     
     // On vérifie que les champs ne sont pas vides (validation de base)
-    if (!formData.Prénom || !formData.Nom || !formData.email || !formData.Num) {
+    if (!formData.prenom || !formData.nom || !formData.email || !formData.tel) {
       alert("Veuillez remplir tous les champs");
       return;
     }
@@ -33,10 +33,10 @@ const ContactForm = ({ addContact }) => {
 
     // On réinitialise le formulaire après l'envoi
     setFormData({
-      Prénom: '',
-      Nom: '',
+      prenom: '',
+      nom: '',
       email: '',
-      Num: ''
+      tel: ''
     });
   };
 
@@ -47,18 +47,18 @@ const ContactForm = ({ addContact }) => {
         <div>
           <input
             type="text"
-            name="Prénom"
+            name="prenom"
             placeholder="Prénom"
-            value={formData.Prénom}
+            value={formData.prenom}
             onChange={handleChange}
           />
         </div>
         <div>
           <input
             type="text"
-            name="Nom"
+            name="nom"
             placeholder="Nom"
-            value={formData.Nom}
+            value={formData.nom}
             onChange={handleChange}
           />
         </div>
@@ -74,9 +74,9 @@ const ContactForm = ({ addContact }) => {
         <div>
           <input
             type="tel"
-            name="Num"
+            name="tel"
             placeholder="Téléphone"
-            value={formData.Num}
+            value={formData.tel}
             onChange={handleChange}
           />
         </div>
