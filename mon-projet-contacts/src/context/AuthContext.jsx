@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
     function login(email, password) {
         return api.post("/login", { email, password })
             .then(response => {
-                const { token } = response.data;
+                const { token } = response; // <-- Retire le ".data"
                 localStorage.setItem("token", token);
                 setUser({ token });
             });

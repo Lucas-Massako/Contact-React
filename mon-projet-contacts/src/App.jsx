@@ -1,83 +1,57 @@
-
-
-import { useEffect, useState } from 'react'
-import ContactForm from './components/ContactForm'
-import ContactList from './components/ContactList'
-
-import './App.css'
-import { api } from './lib/api';
-import { Routes, Route } from 'react-router-dom';
-
-
-
+import { useState } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
+import ContactForm from './components/ContactForm';
+import ContactList from './components/ContactList';
+import Login from './pages/Login'; // Il manquait l'import
+import ProtectedRoute from './components/ProtectedRoute'; // Il manquait l'import
+import './App.css';
 
 function App() {
-  
   const [contacts, setContacts] = useState([]);
 
-  // Fonction pour ajouter un contact
   const addContact = (newContact) => {
     const contactWithId = { ...newContact, id: Date.now() };
     setContacts([...contacts, contactWithId]);
   };
 
-  // Fonction pour supprimer un contact
   const deleteContact = (id) => {
     const updatedContacts = contacts.filter(contact => contact.id !== id);
     setContacts(updatedContacts);
   };
 
-  // Fonction pour la modification
   const editContact = (contact) => {
     console.log("Modifier le contact :", contact);
-    // Cette partie sera liée à ton backend plus tard
   };
 
+  // UN SEUL return qui englobe tout
   return (
     <div className="App">
       <header>
         <h1>Gestionnaire de Contacts</h1>
+        <nav style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginBottom: '20px' }}>
+          <Link to="/">Accueil</Link>
+          <Link to="/add">Ajouter Contact</Link>
+          <Link to="/login">Login</Link>
+        </nav>
       </header>
 
       <main>
-        {}
-        <ContactForm addContact={addContact} />
-
-        <hr />
-
-        {/* Liste qui affiche les contacts créés */}
-        <ContactList 
-          contacts={contacts} 
-          onDelete={deleteContact} 
-          onEdit={editContact} 
-        />
+        <Routes>
+          <Route path="/" element={
+            <ProtectedRoute>
+              <ContactList contacts={contacts} onDelete={deleteContact} onEdit={editContact} />
+            </ProtectedRoute>
+          } />
+          <Route path="/login" element={<Login />} />
+          <Route path="/add" element={
+            <ProtectedRoute>
+              <ContactForm addContact={addContact} />
+            </ProtectedRoute>
+          } />
+        </Routes>
       </main>
     </div>
-  )
-  return (
-  <div className="App">
-    <nav>
-      <link to="/">Accueil</link>
-      <link to="/addContact">Ajouter Contact</link>
-    <link to="/login">Login</link>
-    </nav>
-    </div>
   );
-    
 }
-<Routes>
-  <Route path="/" element={
-    <ProtectedRoute><contactList contacts={contacts} deleteContact={deleteContact} updatedContacts={updatedContacts}></ProtectedRoute>
-    <Route path="/login" element={<Login />} />
-    <Route path="/add" element={
-      <ProtectedRoute>
-        <ContactForm addContact={addContact} />
-      </ProtectedRoute>
-    } />
-  
-}
-</Routes>
-  
 
-
-export default App
+export default App;

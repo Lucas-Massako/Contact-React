@@ -43,7 +43,7 @@ app.post('/login', async (req, res) => {
     }
     const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });
-}
+});
 
 const contacts = [
     { id: 1, prenom: "Alice", nom: "Dupont", email: "alice@example.com", tel: "1234567890" },
