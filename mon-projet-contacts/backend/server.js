@@ -1,34 +1,60 @@
-const  express = require('express');
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const bycrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const app = express();
-const PORT = 3002;
+app.use(cors());
+app.use(express.json());
 
-const contact =[
-    {
-        id: 1,
-        Prénom: "Jean",
-        Nom: "Dupont",
-        email: "",
-        num:"0600000000"
-    },
-    {
-        id: 2,
-        Prénom: "Marie",
-        Nom: "Curie",
-        email: "marie.cuirie@exemple.com",
-        num:"0600000000"
-    }  ,
-    {
-        id: 3,
-        Prénom: "Albert",
-        Nom: "Einstein",
-        email: "albert.einstein@exemple.com",
-        num:"0600054000"
+const Port = 3002;
+const JWT_SECRET = process.env.JWT_SECRET
+
+const users = []; 
+(async () => {
+    const hashedPassword = await bycrypt.hash('password123', 10);
+    users.push({ id: 1, email: 'admin@example.com', password: hashedPassword });
+})();
+
+function requireAuth(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    if (!authHeader) {
+        return res.status(401).json({ message: 'Token manquant' });
     }
-]
+    const token = authHeader.split(' ')[1];
+   
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        return res.status(401).json({ message: 'Token invalide' });
+    }
+}
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const user = users.find(u => u.email === email);
+    if (!user) {
+        return res.status(401).json({ message: 'Utilisateur non trouvé' });
+    }
+    const isPasswordValid = await bycrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+        return res.status(401).json({ message: 'Mot de passe incorrect' });
+    }
+    const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token });
+}
+
+const contacts = [
+    { id: 1, prenom: "Alice", nom: "Dupont", email: "alice@example.com", tel: "1234567890" },
+    { id: 2, prenom: "Bob", nom: "Martin", email: "bob@example.com", tel: "0987654321" },
+    { id: 3, prenom: "Charlie", nom: "Bernard", email: "charlie@example.com", tel: "1122334455" }
+];
+
 app.get('/contacts', (req, res) => {
-    res.json(contact);
+    res.json(contacts);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(Port, () => {
+    console.log(`Serveur démarré sur le port ${Port}`);
 });
