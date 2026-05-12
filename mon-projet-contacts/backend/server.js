@@ -54,7 +54,15 @@ const contacts = [
 app.get('/contacts', (req, res) => {
     res.json(contacts);
 });
-
+// 2. LA NOUVELLE ROUTE POST : Ajouter un contact
+app.post('/contacts', (req, res) => {
+    const newContact = {
+        id: Date.now(), // Génère un ID unique
+        ...req.body     // Récupère les données envoyées (prenom, nom, email, tel)
+    };
+    contacts.push(newContact); // Ajoute au tableau
+    res.status(201).json(newContact); // Renvoie un succès
+});
 app.listen(Port, () => {
     console.log(`Serveur démarré sur le port ${Port}`);
 });
