@@ -20,22 +20,41 @@ function Login() {
             });
     }
     
+    
     return (   
-        <form onSubmit={handleSubmit}> style display: flex; flex-direction: column; align-items: center; margin-top: 50px;
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
+
+        <form onSubmit={handleSubmit}>
         <input
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}  // style margin-bottom: 10px; padding: 8px; width: 200px;
+            onChange={(e) => setEmail(e.target.value)}  
         />
         <input
             type="password"
             placeholder="Mot de passe"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}  // style margin-bottom: 10px; padding: 8px; width: 200px;
+            onChange={(e) => setPassword(e.target.value)} 
         />
-        <button type="submit">Se connecter</button>  // style padding: 8px 16px;
+        <button type="submit">Se connecter</button> 
+       <p style={{ 
+            background: '#f8f9fa', 
+            padding: '10px 20px', 
+            textAlign: 'center',
+             alignItems: 'center', 
+            margin: '0 auto 20px auto', 
+            width: 'fit-content', 
+            borderRadius: '5px', 
+            border: '1px solid #ddd',
+            fontSize: '0.9rem',
+        color: '#555'
+}}>
+  💡 <strong>Compte de test :</strong> admin@example.com / password123
+</p>
+       
     </form>
+     </div>
     );
 }   
 export default Login;

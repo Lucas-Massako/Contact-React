@@ -1,5 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL;
-
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3002';
 export const api = {
     get: (url) => fetch(`${BASE_URL}${url}`).then(res => res.json()),
     post : (url, body) => fetch(`${BASE_URL}${url}`, {
